@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs'; 
-import { catchError, tap } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError, } from 'rxjs'; 
+import { catchError, tap, filter } from 'rxjs/operators';
 
 import { IProduct } from "./product";
 
 
 
-@Injectable({
+@Injectable({ 
     providedIn: 'root'
 })
 
@@ -23,6 +23,13 @@ export class ProductService {
         );
     }
 
+    getProductById(id: number): Observable<IProduct[]> {
+        return this.http.get<IProduct[]>(this.productUrl).pipe(
+            filter(product => product.productId == id), 
+            catchError(this.handleError) 
+        );  
+    }
+ 
     private handleError(err: HttpErrorResponse) {
         let errorMessage = '';
         if(err.error instanceof ErrorEvent) {
