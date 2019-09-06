@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs'; 
-import { catchError, tap, filter } from 'rxjs/operators';
+import { catchError, tap, filter, map } from 'rxjs/operators';
 
 import { IProduct } from "./product";
 
@@ -25,10 +25,10 @@ export class ProductService {
 
     getProductById(id: number): Observable<IProduct[]> {
         return this.http.get<IProduct[]>(this.productUrl).pipe(
-            filter(product => product.productId == id), 
+            map(products => products.filter(products => products.productId === id)), 
             catchError(this.handleError) 
         );  
-    }
+    }  
  
     private handleError(err: HttpErrorResponse) {
         let errorMessage = '';
