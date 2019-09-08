@@ -11,7 +11,7 @@ import { IProduct } from './product';
 
 export class ProductDetailComponent implements OnInit {
   pageTitle: string = 'Product Detail';
-  product: IProduct[] = [];
+  product;
   errorMessage: string;
   id: number;
 
@@ -36,15 +36,17 @@ export class ProductDetailComponent implements OnInit {
 
     this.productService.getProductById(this.id).subscribe({
       next: product => {
-          this.product = product
+          this.product = product;
+          console.log(this.product);
+          console.log(product);
       },
       error: err => this.errorMessage = err
-  });
+    });
 
-  } 
+  }
 
   onBack(): void {
-    this.router.navigate(['/products'])
+    this.router.navigate(['/products']);
   }
  
 }

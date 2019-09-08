@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs'; 
 import { catchError, tap, filter, map } from 'rxjs/operators';
 
-import { IProduct } from "./product";
+import { IProduct } from './product';
 
 
 
@@ -25,14 +25,16 @@ export class ProductService {
 
     getProductById(id: number): Observable<IProduct[]> {
         return this.http.get<IProduct[]>(this.productUrl).pipe(
-            map(products => products.filter(products => products.productId === id)), 
-            catchError(this.handleError) 
-        );  
-    }  
- 
+            map(data => data.filter(product => product.productId === id)),
+            // tap(data => console.log('All: ' + JSON.stringify(data))),
+            // map(products => products.filter(product => product.productId === id)),
+            catchError(this.handleError)
+        );
+    }
+
     private handleError(err: HttpErrorResponse) {
         let errorMessage = '';
-        if(err.error instanceof ErrorEvent) {
+        if (err.error instanceof ErrorEvent) {
             errorMessage = `An error occured: ${err.error.message}`;
         } else {
             errorMessage = `Server retuned code: ${err.status}, error message is: ${err.message}`;
